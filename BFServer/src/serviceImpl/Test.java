@@ -10,5 +10,7 @@ public class Test {
 		System.out.println(result);
 		String result1 = executeService.execute("++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.", "");
 		System.out.println(result1);
+		String result2 = executeService.execute(",>,,>++++++++[<------<------>>-]<<[>[>+>+<<-]>>[<<+>>-]<<<-]>>>++++++[<++++++++>-],<.>.", "2 3\n");
+		System.out.println(result2);
 	}
 }

@@ -8,6 +8,7 @@ import service.IOService;
 
 public class IOServiceImpl implements IOService{
 	
+	/**file is code and status waiting to be stored, fileName will combine with username_ in front */
 	@Override
 	public boolean writeFile(String file, String userId, String fileName) {
 		File f = new File(userId + "_" + fileName);
