@@ -3,17 +3,11 @@ package ui;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.rmi.RemoteException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
-import rmi.RemoteHelper;
-import ui.LogFrame.ButtonActionListener;
 
 public class NewfileFrame extends JFrame {
 	JPanel filenamePanel;
@@ -67,6 +61,7 @@ public class NewfileFrame extends JFrame {
 				String filename = filenameField.getText();
 				if(filename.length() >= 1) {
 					MainFrame.filename = filename;
+					MainFrame.fileVersion = "";
 					MainFrame.mainFrame.dispose();
 					MainFrame.getInstance();
 					newfileFrame.dispose();

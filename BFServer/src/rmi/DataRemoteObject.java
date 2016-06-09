@@ -25,23 +25,35 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 	}
 
 	@Override
-	public boolean writeFile(String file, String userId, String fileName) throws RemoteException{
+	public boolean writeFile(String file, String userId, String fileName, String fileVersion) throws RemoteException{
 		// TODO Auto-generated method stub
-		return iOService.writeFile(file, userId, fileName);
+		return iOService.writeFile(file, userId, fileName, fileVersion);
 	}
 
 	@Override
-	public String readFile(String userId, String fileName) throws RemoteException{
+	public String[] readFile(String userId, String fileName) throws RemoteException{
 		// TODO Auto-generated method stub
 		return iOService.readFile(userId, fileName);
 	}
 
 	@Override
-	public String readFileList(String userId) throws RemoteException{
+	public String[] readFileList(String userId) throws RemoteException{
 		// TODO Auto-generated method stub
 		return iOService.readFileList(userId);
 	}
+	
+	@Override
+	public String[] readFile(String userId, String fileName, String fileVersion) throws RemoteException {
+		// TODO Auto-generated method stub
+		return iOService.readFile(userId, fileName, fileVersion);
+	}
 
+	@Override
+	public String[] readVersionList(String userId, String fileName) throws RemoteException {
+		// TODO Auto-generated method stub
+		return iOService.readVersionList(userId, fileName);
+	}
+	
 	@Override
 	public boolean login(String username, String password) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -59,5 +71,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 		// TODO Auto-generated method stub
 		return executeService.execute(code, param);
 	}
+
+
 
 }

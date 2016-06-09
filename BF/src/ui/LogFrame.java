@@ -1,11 +1,13 @@
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -81,7 +83,14 @@ public class LogFrame extends JFrame {
 						MainFrame.username = nameField.getText();
 						MainFrame.getInstance();
 					} else {
-						
+						JDialog warning = new JDialog(logFrame,true);
+						JLabel warningText = new JLabel("Username or password is wrong.");
+						warning.setSize(300, 60);
+						warning.setLocation(500, 250);
+						warning.getContentPane().add(warningText, BorderLayout.CENTER);
+						warning.setTitle("Warning");
+						warning.setVisible(true);
+						warning.setDefaultCloseOperation(HIDE_ON_CLOSE);
 					}
 				} catch (RemoteException e1) {
 					e1.printStackTrace();
