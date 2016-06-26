@@ -30,13 +30,18 @@ public class MyUndoManager{
 	public void undo() {
 		
 		//call undo() on the last edit, and set currentEdit to the previous one.
-		if(edits.size() > 0) {
+		if(edits.size() > 0 && currentEdit!= null) {
 			currentEdit.undo(document);
 			if(edits.indexOf(currentEdit) > 0) {
 				currentEdit = edits.get(edits.indexOf(currentEdit)-1);
 			} else {
 				currentEdit = null;
 			}
+		}
+		try {
+			documentBeforeRemoval = document.getText(0, document.getLength());
+		} catch (BadLocationException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -51,6 +56,11 @@ public class MyUndoManager{
 				currentEdit = edits.get(edits.indexOf(currentEdit)+1);
 				currentEdit.redo(document);
 			}
+		}
+		try {
+			documentBeforeRemoval = document.getText(0, document.getLength());
+		} catch (BadLocationException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -102,7 +112,19 @@ public class MyUndoManager{
 		int length = ev.getLength();
 		int offset = ev.getOffset();
 		EventType type = ev.getType();
-		String changedText = documentBeforeRemoval.substring(offset, offset + length);
+		String changedText = "";
+		try {
+			changedText = documentBeforeRemoval.substring(offset, offset + length);
+		} catch (Exception e) {
+			try {
+				System.out.println(document.getText(0, document.getLength()));
+			} catch (BadLocationException e1) {
+				e1.printStackTrace();
+			}
+			System.out.println(documentBeforeRemoval);
+			System.out.println(offset);
+			System.out.println(length);
+		}
 		
 		Edit newEdit = new Edit(type, offset, length, changedText);
 		if(currentEdit!= null) {

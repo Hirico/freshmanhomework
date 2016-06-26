@@ -10,10 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -26,6 +28,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.Keymap;
+import javax.swing.text.TextAction;
 import javax.swing.undo.UndoManager;
 
 import rmi.RemoteHelper;
@@ -132,10 +137,16 @@ public class MainFrame extends JFrame {
 		undoManager = new MyUndoManager(codeDocument);
 		codeDocument.addDocumentListener(documentListener = new MyDocumentListener());
 		
-		
+		UndoAction undoAction = new UndoAction();
+		RedoAction redoAction = new RedoAction();
 		//set up undo/redo keystroke
-		KeyStroke undoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.META_MASK);
-		KeyStroke redoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.META_MASK);
+		KeyStroke undoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK);
+		KeyStroke redoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK);
+		Keymap keymap = codeTextArea.getKeymap();
+		Keymap newmap = JTextComponent.addKeymap("MainFrameMap", keymap);
+		newmap.addActionForKeyStroke(undoKeystroke, undoAction);
+		newmap.addActionForKeyStroke(redoKeystroke, redoAction);
+		codeTextArea.setKeymap(newmap);
 		 
 		
 		panel.setLayout(new FlowLayout());
@@ -284,6 +295,32 @@ public class MainFrame extends JFrame {
 		@Override
 		public void removeUpdate(DocumentEvent e) {
 			undoManager.addRemoveEdit(e);
+		}
+		
+	}
+	
+	class RedoAction extends TextAction {
+
+		public RedoAction() {
+			super("redoAction");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			undoManager.redo();
+		}
+		
+	}
+	
+	class UndoAction extends TextAction {
+
+		public UndoAction() {
+			super("undoAction");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			undoManager.undo();
 		}
 		
 	}
