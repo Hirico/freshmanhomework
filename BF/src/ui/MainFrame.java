@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.undo.UndoManager;
 
@@ -39,10 +42,8 @@ public class MainFrame extends JFrame {
 	static String filename = "default";
 	static String fileVersion = "";
 	public Document codeDocument;
-	public UndoHandler undoHandler;
-	public UndoManager undoManager;
-	public UndoAction undoAction;
-	public RedoAction redoAction;
+	public MyUndoManager undoManager;
+	public static MyDocumentListener documentListener;
 	
 	public JMenu versionMenu;
 	
@@ -83,10 +84,8 @@ public class MainFrame extends JFrame {
 		JMenuItem saveMenuItem = new JMenuItem("Save");
 		fileMenu.add(saveMenuItem);
 		JMenuItem undoMenuItem = new JMenuItem("Undo");
-		undoMenuItem.addActionListener(undoAction);
 		fileMenu.add(undoMenuItem);
 		JMenuItem redoMenuItem = new JMenuItem("Redo");
-		redoMenuItem.addActionListener(redoAction);
 		fileMenu.add(redoMenuItem);
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
 		fileMenu.add(exitMenuItem);
@@ -95,6 +94,8 @@ public class MainFrame extends JFrame {
 		openMenuItem.addActionListener(new OpenActionListener());
 		saveMenuItem.addActionListener(new SaveActionListener());
 		exitMenuItem.addActionListener(new ExitActionListener());
+		redoMenuItem.addActionListener(new RedoActionListener());
+		undoMenuItem.addActionListener(new UndoActionListener());
 		
 		//runMenu components
 		menuBar.add(runMenu);
@@ -117,10 +118,6 @@ public class MainFrame extends JFrame {
 		this.setJMenuBar(menuBar);
 		
 				
-		undoHandler = new UndoHandler();
-		undoManager = new UndoManager();
-		undoAction = new UndoAction();
-		redoAction = new RedoAction();
 		codeTextArea = new JTextArea("(Your code here)");
 		codeTextArea.setMargin(new Insets(10, 10, 10, 10));
 		codeTextArea.setBounds(0, 0, WIDTH, (int) (0.7*HEIGHT));
@@ -131,20 +128,15 @@ public class MainFrame extends JFrame {
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER );
 		this.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		codeDocument = codeTextArea.getDocument();
-		codeDocument.addUndoableEditListener(undoHandler);
+		Document codeDocument = codeTextArea.getDocument();
+		undoManager = new MyUndoManager(codeDocument);
+		codeDocument.addDocumentListener(documentListener = new MyDocumentListener());
+		
 		
 		//set up undo/redo keystroke
 		KeyStroke undoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.META_MASK);
 		KeyStroke redoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.META_MASK);
 		 
-		undoAction = new UndoAction();
-		codeTextArea.getInputMap().put(undoKeystroke, "undoKeystroke");
-		codeTextArea.getActionMap().put("undoKeystroke", undoAction);
-		 
-		redoAction = new RedoAction();
-		codeTextArea.getInputMap().put(redoKeystroke, "redoKeystroke");
-		codeTextArea.getActionMap().put("redoKeystroke", redoAction);
 		
 		panel.setLayout(new FlowLayout());
 		paramTextArea = new JTextArea(1,20);
@@ -263,6 +255,38 @@ public class MainFrame extends JFrame {
 		
 	}
 	
+	class RedoActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			undoManager.redo();
+		}
+	}
+	
+	class UndoActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			undoManager.undo();
+		}
+	}
+	
+	class MyDocumentListener implements DocumentListener {
+
+		@Override
+		public void changedUpdate(DocumentEvent e) {
+			
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent e) {
+			undoManager.addInsertEdit(e);
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent e) {
+			undoManager.addRemoveEdit(e);
+		}
+		
+	}
 	
 	/**format: 20160608105308 */
 	public String executeVersion() {
