@@ -14,5 +14,6 @@ public class Test {
 		System.out.println(result2);
 		String result3 = executor.execute(",>,<.>.", "AB");
 		System.out.println(result3);
+		System.out.println(executor.execute(",>,<.>.", "("));
 	}
 }

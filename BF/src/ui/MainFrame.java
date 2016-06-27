@@ -9,13 +9,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,8 +28,6 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.Keymap;
 import javax.swing.text.TextAction;
-import javax.swing.undo.UndoManager;
-
 import rmi.RemoteHelper;
 
 

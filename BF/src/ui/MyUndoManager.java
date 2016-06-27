@@ -3,11 +3,9 @@ package ui;
 import java.util.ArrayList;
 
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentEvent.ElementChange;
 import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-import javax.swing.text.Element;
 
 
 public class MyUndoManager{
@@ -96,6 +94,7 @@ public class MyUndoManager{
 				edits.add(newCompoundEdit);
 			}
 		} else {
+			edits = new ArrayList<CompoundEdit>();
 			CompoundEdit newCompoundEdit = new CompoundEdit(newEdit);
 			currentEdit = newCompoundEdit;
 			edits.add(newCompoundEdit);
@@ -143,6 +142,7 @@ public class MyUndoManager{
 				edits.add(newCompoundEdit);
 			}
 		} else {
+			edits = new ArrayList<CompoundEdit>();
 			CompoundEdit newCompoundEdit = new CompoundEdit(newEdit);
 			currentEdit = newCompoundEdit;
 			edits.add(newCompoundEdit);

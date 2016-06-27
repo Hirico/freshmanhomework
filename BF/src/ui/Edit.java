@@ -44,6 +44,14 @@ public class Edit {
 			try {
 				d.remove(offset, length);
 			} catch (BadLocationException e) {
+				try {
+					System.out.println(d.getText(0, d.getLength()));
+				} catch (BadLocationException e1) {
+					e1.printStackTrace();
+				}
+								
+				System.out.println(offset);
+				System.out.println(length);
 				e.printStackTrace();
 			}
 		}

@@ -15,6 +15,15 @@ public class ExecuteServiceImpl implements ExecuteService {
 	 */
 	@Override
 	public String execute(String code, String param) throws RemoteException {
+		for(int i = 0; i < code.length(); i++) {
+			if(code.charAt(i) != '[' && code.charAt(i) != ']' && code.charAt(i) != '>' && code.charAt(i) != '<' 
+					&& code.charAt(i) != '+' && code.charAt(i) != '-' && code.charAt(i) != ',' && code.charAt(i) != '.'
+					&& code.charAt(i) != ' ' && code.charAt(i) != '\n') {
+				return "invalid";
+			}
+		}
+		
+		try {
 		//initialize
 		char[] codeChars = code.toCharArray();
 		String result = "";
@@ -127,6 +136,9 @@ public class ExecuteServiceImpl implements ExecuteService {
 			}
 		}
 		return result;
+		} catch (Exception e) {
+			return "invalid";
+		}
 	}
 
 }
