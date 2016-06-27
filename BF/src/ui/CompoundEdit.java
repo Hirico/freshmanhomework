@@ -13,22 +13,26 @@ import javax.swing.text.Document;
 public class CompoundEdit {
 	public EventType type;
 	public ArrayList<Edit> edits;
+	public int offset;
 	
 	public CompoundEdit(Edit a, Edit b) {
 		edits = new ArrayList<Edit>();
 		edits.add(a);
 		edits.add(b);
 		this.type = a.type;
+		offset = b.offset;
 	}
 	
 	public CompoundEdit(Edit a) {
 		edits = new ArrayList<Edit>();
 		edits.add(a);
 		this.type = a.type;
+		offset = a.offset;
 	}
 	
 	public void addEdit(Edit e) {
 		edits.add(e);
+		offset = e.offset;
 	}
 	
 	public void redo(Document d) {

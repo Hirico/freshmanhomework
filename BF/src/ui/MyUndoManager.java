@@ -86,7 +86,7 @@ public class MyUndoManager{
 				}
 				edits = tempList;
 			}
-			if(currentEdit.type == type) {
+			if(currentEdit.type == type && (offset == currentEdit.offset-1) || (offset == currentEdit.offset+1)) {
 				currentEdit.addEdit(newEdit);
 			} else {
 				CompoundEdit newCompoundEdit = new CompoundEdit(newEdit);
@@ -134,7 +134,7 @@ public class MyUndoManager{
 				}
 				edits = tempList;
 			}
-			if(currentEdit.type == type) {
+			if(currentEdit.type == type && (offset == currentEdit.offset-1) || (offset == currentEdit.offset+1)) {
 				currentEdit.addEdit(newEdit);
 			} else {
 				CompoundEdit newCompoundEdit = new CompoundEdit(newEdit);
