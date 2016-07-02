@@ -64,6 +64,7 @@ public class NewfileFrame extends JFrame {
 					MainFrame.fileVersion = "";
 					MainFrame.mainFrame.dispose();
 					MainFrame.getInstance();
+					MainFrame.mainFrame.edited = false;
 					newfileFrame.dispose();
 				}
 			} else if(command.equals("Cancel")) {

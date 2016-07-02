@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.rmi.RemoteException;
 
 import javax.swing.JButton;
@@ -13,7 +15,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-
 import rmi.RemoteHelper;
 
 public class LogFrame extends JFrame {
@@ -62,8 +63,10 @@ public class LogFrame extends JFrame {
 		this.add(namePanel);
 		this.add(pwPanel);
 		this.add(buttonPanel);
+		nameField.addKeyListener(new EnterKeyActionListener());
+		pwField.addKeyListener(new EnterKeyActionListener());
 		
-		this.setSize(MainFrame.WIDTH, 200);
+		this.setSize(400, 200);
 		this.setLocation(400, 200);
 		this.setTitle("Login");
 		this.setVisible(true);
@@ -98,6 +101,45 @@ public class LogFrame extends JFrame {
 			} else if(command.equals("Quit")) {
 				logFrame.dispose();
 			}
+			
+		}
+		
+	}
+	
+	class EnterKeyActionListener implements KeyListener {
+
+
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+				try {
+					if(RemoteHelper.getInstance().getUserService().login(nameField.getText(), String.valueOf(pwField.getPassword()))) {
+						logFrame.dispose();
+						MainFrame.username = nameField.getText();
+						MainFrame.getInstance();
+					} else {
+						JDialog warning = new JDialog(logFrame,true);
+						JLabel warningText = new JLabel("Username or password is wrong.");
+						warning.setSize(300, 60);
+						warning.setLocation(500, 250);
+						warning.getContentPane().add(warningText, BorderLayout.CENTER);
+						warning.setTitle("Warning");
+						warning.setVisible(true);
+						warning.setDefaultCloseOperation(HIDE_ON_CLOSE);
+					}
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void keyTyped(KeyEvent arg0) {
 			
 		}
 		

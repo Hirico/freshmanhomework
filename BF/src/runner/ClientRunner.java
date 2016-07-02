@@ -6,9 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import rmi.RemoteHelper;
-import service.IOService;
 import ui.LogFrame;
-import ui.MainFrame;
 
 public class ClientRunner {
 	private RemoteHelper remoteHelper;

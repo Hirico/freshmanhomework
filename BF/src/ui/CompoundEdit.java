@@ -6,7 +6,7 @@ import javax.swing.event.DocumentEvent.EventType;
 import javax.swing.text.Document;
 
 /**A list of edits with same type, stored in MyUndoManager with other standalone edits and compoundEdits 
- * In MyUndoManager, an instance of this is created when a new edit is with the same type as last one. When last one 
+ * In MyUndoManager, an instance of this is created when a new edit is the same type as last one. When last one 
  * is a compoundEdit, the compoundEdit's add() will be called. After doing so, new edit is deleted in 
  * the edits' list of MyUndoManager.
  * */

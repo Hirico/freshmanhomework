@@ -49,7 +49,7 @@ public class OpenfileFrame extends JFrame {
 		JScrollPane pane = new JScrollPane(list);
 		this.getContentPane().add(pane, BorderLayout.CENTER);
 		
-		this.setSize(MainFrame.WIDTH, 200);
+		this.setSize(400, 200);
 		this.setLocation(400, 200);
 		this.setTitle("Open");
 		this.setVisible(true);
@@ -67,6 +67,7 @@ public class OpenfileFrame extends JFrame {
 					if(list.getSelectedValue() != null) {
 						MainFrame.mainFrame.readFile(RemoteHelper.getInstance().getIOService().readFile(MainFrame.username, (String)list.getSelectedValue()));
 						MainFrame.mainFrame.refreshVersionList();
+						MainFrame.mainFrame.edited = false;
 						openfileFrame.dispose();
 					} else {
 	
